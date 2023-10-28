@@ -125,14 +125,6 @@ module "aws_security_group" {
 ## ---------------------------------------------------------------------------------------------------------------------
 ## Create NICs for EC2 instances
 ## ---------------------------------------------------------------------------------------------------------------------
-resource "aws_network_interface" "t3a_small" {
-  subnet_id   = aws_subnet.subnet_1.id
-  private_ips = ["10.0.1.60"]
-  security_groups = [
-    module.aws_security_group.allow_ssh_id,
-    module.aws_security_group.allow_web_id
-  ]
-}
 
 ## ---------------------------------------------------------------------------------------------------------------------
 ## Create EIPs for EC2 instances
