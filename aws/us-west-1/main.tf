@@ -28,47 +28,12 @@ provider "cloudflare" {
 ## Bind A record subdomains to AWS EIP for services 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-module "status_a_records" {
-  source = "../../modules/cloudflare_a_record"
-
-  subdomains         = ["status", "uptime-kuma"]
-  cloudflare_zone_id = var.pcc_cloudflare_zone_id
-  aws_public_eip     = aws_eip.t2_micro.public_ip
-}
-
-module "shuttleday_status_a_records" {
-  source = "../../modules/cloudflare_a_record"
-
-  subdomains         = ["status"]
-  cloudflare_zone_id = var.shuttleday_cloudflare_zone_id
-  aws_public_eip     = aws_eip.t2_micro.public_ip
-}
-
 ## ---------------------------------------------------------------------------------------------------------------------
 ## SERVER INFRASTRUCTURE
 ## ---------------------------------------------------------------------------------------------------------------------
 ## Set up EC2 instances
 ## ---------------------------------------------------------------------------------------------------------------------
-resource "aws_instance" "t2_micro" {
-  ami                  = "ami-014d05e6b24240371" # Ubuntu 22.04 LTS
-  iam_instance_profile = "S3-Full-Access"
-  instance_type        = "t2.micro"
-  availability_zone    = "us-west-1a"
-  key_name             = "wireguard"
 
-  network_interface {
-    network_interface_id = aws_network_interface.t2_micro.id
-    device_index         = 0
-  }
-
-  root_block_device {
-    volume_size = 10
-  }
-
-  tags = {
-    Name = "t2-micro"
-  }
-}
 
 ## ---------------------------------------------------------------------------------------------------------------------
 ## Set up networking
@@ -135,25 +100,9 @@ module "aws_security_group" {
 ## ---------------------------------------------------------------------------------------------------------------------
 ## Create NICs for EC2 instances
 ## ---------------------------------------------------------------------------------------------------------------------
-resource "aws_network_interface" "t2_micro" {
-  subnet_id   = aws_subnet.subnet_1.id
-  private_ips = ["10.0.1.50"]
-  security_groups = [
-    module.aws_security_group.allow_web_id,
-    module.aws_security_group.allow_ssh_id,
-    module.aws_security_group.allow_wireguard_id,
-  ]
-}
 
 ## ---------------------------------------------------------------------------------------------------------------------
 ## Create EIPs for EC2 instances
 ## ---------------------------------------------------------------------------------------------------------------------
-resource "aws_eip" "t2_micro" {
-  instance = aws_instance.t2_micro.id
-  vpc      = true
 
-  depends_on = [
-    aws_internet_gateway.main
-  ]
-}
 
