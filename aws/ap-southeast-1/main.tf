@@ -32,8 +32,6 @@ module "pcc" {
   cloudflare_zone_id = var.pcc_cloudflare_zone_id
   s3_bucket_policy   = "../s3-policies/pcc-policy.json"
   cname_record       = "pierreccesario.com"
-  index              = "index.html"
-  error              = "error.html"
   site_redirect = {
     cname_record     = "www.pierreccesario.com"
     s3_bucket_policy = "../s3-policies/www-pcc-policy.json"
@@ -45,8 +43,6 @@ module "music_pcc" {
   cloudflare_zone_id = var.pcc_cloudflare_zone_id
   s3_bucket_policy   = "../s3-policies/music-pcc-policy.json"
   cname_record       = "music.pierreccesario.com"
-  index              = "index.html"
-  error              = "error.html"
 }
 
 ## ---------------------------------------------------------------------------------------------------------------------

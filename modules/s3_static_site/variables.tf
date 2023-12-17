@@ -11,11 +11,13 @@ variable "s3_bucket_policy" {
 variable "index" {
   description = "path for index.html"
   type        = string
+  default     = "index.html"
 }
 
 variable "error" {
   description = "path for error.html"
   type        = string
+  default     = "error.html"
 }
 
 variable "cloudflare_zone_id" {
