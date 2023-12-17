@@ -6,11 +6,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "4.38.0"
+      version = "~> 5.0"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 3.0"
+      version = "~> 4.0"
     }
   }
 }
@@ -100,12 +100,6 @@ resource "aws_subnet" "subnet_1" {
 resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.subnet_1.id
   route_table_id = aws_route_table.main.id
-}
-
-module "aws_security_group" {
-  source = "../../modules/aws_security_groups"
-
-  vpc_id = aws_vpc.main.id
 }
 
 ## ---------------------------------------------------------------------------------------------------------------------
