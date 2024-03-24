@@ -3,11 +3,6 @@ variable "cname_record" {
   type        = string
 }
 
-variable "s3_bucket_policy" {
-  description = "Relative path to the S3 bucket policy"
-  type        = string
-}
-
 variable "index" {
   description = "path for index.html"
   type        = string
@@ -25,14 +20,7 @@ variable "cloudflare_zone_id" {
   type        = string
 }
 
-variable "site_redirect" {
-  description = "If provided, create another CNAME record and S3 bucket for redirection to main bucket, typically for www subdomain"
-  type = object({
-    cname_record     = string
-    s3_bucket_policy = string
-  })
-  default = {
-    cname_record     = ""
-    s3_bucket_policy = ""
-  }
+variable "site_redirect_from" {
+  description = "If provided, create another CNAME record and S3 bucket for redirection to main bucket, typically for www subdomain. Expects a json policy."
+  default     = null
 }
