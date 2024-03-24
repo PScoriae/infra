@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "pscoriae-tf-state-s3"
-    key            = "aws/ap-southeast-1/terraform.tfstate"
+    key            = "aws/ap-southeast-1/s3-site/terraform.tfstate"
     region         = "ap-southeast-1"
     dynamodb_table = "tf-state-lock"
   }
@@ -9,4 +9,8 @@ terraform {
 
 provider "aws" {
   region = "ap-southeast-1"
+}
+
+provider "cloudflare" {
+  api_token = data.aws_ssm_parameter.cf_api_token.value
 }
