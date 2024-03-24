@@ -1,21 +1,21 @@
 terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 5.6.0"
-    }
+  backend "s3" {
+    bucket         = "pscoriae-tf-state-s3"
+    key            = "gcp/terraform.tfstate"
+    region         = "ap-southeast-1"
+    dynamodb_table = "tf-state-lock"
   }
 }
 
 provider "google" {
-  project = var.gcp_project
-  region  = var.default_gcp_region
-  zone    = var.default_gcp_zone
+  project = "pierreccesario"
+  region  = "us-central1"
+  zone    = "us-central1-a"
 }
 
 resource "google_compute_instance" "bastion_host" {
   name         = "bastion-host"
-  machine_type = var.bastion_machine_type
+  machine_type = "e2-micro"
   zone         = "us-central1-a"
   tags         = ["http-server", "https-server"]
   boot_disk {
@@ -37,5 +37,9 @@ resource "google_compute_instance" "bastion_host" {
     }
     network    = "default"
     network_ip = "10.128.0.10"
+  }
+
+  lifecycle {
+    ignore_changes = [metadata]
   }
 }
