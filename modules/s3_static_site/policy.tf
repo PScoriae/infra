@@ -1,23 +1,11 @@
-data "aws_iam_policy_document" "static_site" {
-  statement {
-    sid = "PublicReadGetObject"
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:GetObject",
-    ]
-
-    resources = [
-      "${aws_s3_bucket.static_site.arn}/*",
-    ]
-  }
+locals {
+  buckets = compact([
+    aws_s3_bucket.static_site.arn,
+    var.site_redirect_from != null ? aws_s3_bucket.redirect[0].arn : null,
+  ])
 }
-
-data "aws_iam_policy_document" "redirect" {
-  count = var.site_redirect_from != null ? 1 : 0
+data "aws_iam_policy_document" "this" {
+  for_each = toset(local.buckets)
   statement {
     sid = "PublicReadGetObject"
     principals {
@@ -30,7 +18,7 @@ data "aws_iam_policy_document" "redirect" {
     ]
 
     resources = [
-      "${aws_s3_bucket.redirect[0].arn}/*",
+      "${each.value}/*",
     ]
   }
 }
