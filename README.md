@@ -27,20 +27,17 @@
 
 # About
 
-This repository is concerned with the provisioning of infrastructure for any of my personal projects using Terraform IaC. Currently, the cloud services used to host my projects are AWS and Cloudflare.
+This repository is concerned with the provisioning of infrastructure for any of my personal projects using Terraform.
+
+Currently, the cloud services used to host my projects are AWS, GCP and Cloudflare.
 
 # Installation
 
-This section guides you on how to setup this repo for your own use.
+This section guides you on how to setup this Terraform monorepo in your local machine.
 
 1. First, ensure [Terraform](https://terraform.com) is installed on your dev computer.
 2. Ensure the [AWS CLI](https://aws.amazon.com/cli/) is also installed on your dev computer.
 3. In the AWS console, create an IAM User for Terraform to use.
 4. Run `aws configure` in your terminal to configure the AWS CLI to use said IAM User. This is how Terraform will gain access to your AWS account.
-5. In your desired project folder, clone the project with the following command:
-
-   ```bash
-   git clone https://github.com/PScoriae/infra
-   ```
-
+5. In your desired project folder, clone the repo.
 6. Finally, run `terraform init` in the root directory to set up the Terraform backend.
