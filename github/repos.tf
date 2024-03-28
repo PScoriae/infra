@@ -35,8 +35,9 @@ module "movie_recommender" {
 }
 
 module "mongogin" {
-  source = "../modules/github_repo"
-  name   = "mongogin"
+  source   = "../modules/github_repo"
+  name     = "mongogin"
+  archived = true
 }
 
 module "imyour_joy_py" {
