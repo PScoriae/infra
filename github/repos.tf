@@ -53,6 +53,14 @@ module "imyour_joy" {
   topics      = ["bot", "docker", "jenkins", "spotify", "automation", "youtube", "discord", "discord-bot", "discord-js", "kpop", "webscraping"]
 }
 
+module "pcpartstool" {
+  source      = "../modules/github_repo"
+  name        = "PCPartsTool"
+  description = "SvelteKit MongoDB App, part of a series of repositories with the aim of learning DevOps best practices and tooling."
+  archived    = true
+  topics      = ["docker", "nginx", "jenkins", "aws", "ansible", "typescript", "svelte", "sveltekit"]
+}
+
 module "pcpartstool_scraper" {
   source      = "../modules/github_repo"
   name        = "PCPartsTool-Scraper"
