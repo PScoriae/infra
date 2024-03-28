@@ -52,3 +52,11 @@ module "imyour_joy" {
   archived    = true
   topics      = ["bot", "docker", "jenkins", "spotify", "automation", "youtube", "discord", "discord-bot", "discord-js", "kpop", "webscraping"]
 }
+
+module "pcpartstool_scraper" {
+  source      = "../modules/github_repo"
+  name        = "PCPartsTool-Scraper"
+  description = "Node.js PC part data and pricing scraper for the PCPartsTool project"
+  archived    = true
+  topics      = ["javascript", "docker", "jenkins", "scraping"]
+}
