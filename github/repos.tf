@@ -31,6 +31,7 @@ module "movie_recommender" {
   name        = "movie-recommender"
   description = "Functional Python program that takes in a list of favourite movies and returns recommended movies"
   topics      = ["python", "movies"]
+  archived    = true
 }
 
 module "mongogin" {
