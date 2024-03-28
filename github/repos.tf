@@ -68,3 +68,41 @@ module "pcpartstool_scraper" {
   archived    = true
   topics      = ["javascript", "docker", "jenkins", "scraping"]
 }
+
+module "ucs_seating_algorithm" {
+  source      = "../modules/github_repo"
+  name        = "UCS-Seating-Algorithm"
+  description = "Python-based modified UCS algorithm used to determine the best seating arrangements based on comfortability rating between people"
+  archived    = true
+}
+
+module "basic_scala_sockets" {
+  source      = "../modules/github_repo"
+  name        = "BasicScalaSockets"
+  description = "Rudimentary implementation of Client-Server Arch in Scala"
+  archived    = true
+}
+
+module "pepeclicker" {
+  source      = "../modules/github_repo"
+  name        = "PepeClicker"
+  description = "Pepe the Frog themed cookie clicker game built with Scala and ScalaFX."
+  topics      = ["game", "scala", "scalafx", "cookie-clicker", "pepe-the-frog", "pepe"]
+  archived    = true
+}
+
+module "bst_huffman" {
+  source      = "../modules/github_repo"
+  name        = "BST_Huffman"
+  description = "Java implementation of Binary Search Tree and Huffman Encoding for Data Structures and Algorithms CSC2103 Assignment."
+  topics      = ["java", "algorithms", "data-structures", "huffman-encoding", "binary-search-tree"]
+  archived    = true
+}
+
+module "mastermindpy" {
+  source      = "../modules/github_repo"
+  name        = "MastermindPy"
+  description = "The popular game implemented in Python3's console"
+  topics      = ["python", "game", "mastermind"]
+  archived    = true
+}
