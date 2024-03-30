@@ -21,6 +21,7 @@ variable "cloudflare_zone_id" {
 }
 
 variable "site_redirect_from" {
-  description = "If provided, create another CNAME record and S3 bucket for redirection to main bucket, typically for www subdomain. Expects a json policy."
+  description = "If provided, create another CNAME record and S3 bucket for redirection to main bucket, typically for www subdomain. Expects a CNAME record."
+  type        = string
   default     = null
 }
