@@ -1,43 +1,67 @@
+locals {
+  domains = compact([var.cname_record, var.site_redirect_from])
+}
+
 resource "aws_s3_bucket" "static_site" {
-  bucket = var.cname_record
+  for_each = toset(local.domains)
+  bucket   = each.value
 }
 
 resource "aws_s3_bucket_policy" "static_site" {
-  bucket = aws_s3_bucket.static_site.id
-  policy = data.aws_iam_policy_document.s3_public_site["arn:aws:s3:::${var.cname_record}"].json
+  for_each = toset(local.domains)
+  bucket   = aws_s3_bucket.static_site[each.value].id
+  policy   = data.aws_iam_policy_document.s3_public_site["${each.value}"].json
 }
 
 resource "aws_s3_bucket_acl" "static_site" {
-  bucket = aws_s3_bucket.static_site.id
+  bucket = aws_s3_bucket.static_site[var.cname_record].id
   acl    = "public-read"
 }
 
 resource "aws_s3_bucket_website_configuration" "static_site" {
-  bucket = aws_s3_bucket.static_site.id
+  for_each = toset(local.domains)
+  bucket   = aws_s3_bucket.static_site["${each.value}"].id
 
-  index_document {
-    suffix = var.index
-  }
-
-  error_document {
-    key = var.error
-  }
-
-  routing_rule {
-    condition {
-      key_prefix_equals = "docs/"
+  dynamic "index_document" {
+    for_each = each.value == var.cname_record ? [0] : []
+    content {
+      suffix = var.index
     }
-    redirect {
-      replace_key_prefix_with = ""
+  }
+
+  dynamic "error_document" {
+    for_each = each.value == var.cname_record ? [0] : []
+    content {
+      key = var.error
+    }
+  }
+
+  dynamic "routing_rule" {
+    for_each = each.value == var.cname_record ? [0] : []
+    content {
+      condition {
+        key_prefix_equals = "docs/"
+      }
+      redirect {
+        replace_key_prefix_with = ""
+      }
+    }
+  }
+
+  dynamic "redirect_all_requests_to" {
+    for_each = each.value == var.site_redirect_from ? [0] : []
+    content {
+      host_name = aws_s3_bucket.static_site[var.cname_record].bucket
     }
   }
 }
 
 resource "cloudflare_record" "static_site" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.cname_record
-  value   = aws_s3_bucket_website_configuration.static_site.website_endpoint
-  type    = "CNAME"
-  proxied = true
-  comment = "Managed by Terraform"
+  for_each = toset(local.domains)
+  zone_id  = var.cloudflare_zone_id
+  name     = each.value
+  value    = aws_s3_bucket_website_configuration.static_site["${each.value}"].website_endpoint
+  type     = "CNAME"
+  proxied  = true
+  comment  = "Managed by Terraform"
 }
