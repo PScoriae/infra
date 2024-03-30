@@ -1,0 +1,20 @@
+name: Generate terraform docs
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render terraform docs and push changes to main branch
+        uses: terraform-docs/gh-actions@main
+        with:
+          find-dir: modules/
+          recursive: true
+          output-file: README.md
+          output-method: inject
+          git-commit-message: "docs: update terraform module README.md"
+          git-push: true
