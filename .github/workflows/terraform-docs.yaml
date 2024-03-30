@@ -13,7 +13,6 @@ jobs:
         uses: terraform-docs/gh-actions@main
         with:
           find-dir: modules
-          recursive: true
           output-file: README.md
           output-method: inject
           git-commit-message: "docs: update terraform module README.md"
