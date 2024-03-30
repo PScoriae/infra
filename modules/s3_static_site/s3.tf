@@ -36,18 +36,6 @@ resource "aws_s3_bucket_website_configuration" "static_site" {
     }
   }
 
-  dynamic "routing_rule" {
-    for_each = each.value == var.cname_record ? [0] : []
-    content {
-      condition {
-        key_prefix_equals = "docs/"
-      }
-      redirect {
-        replace_key_prefix_with = ""
-      }
-    }
-  }
-
   dynamic "redirect_all_requests_to" {
     for_each = each.value == var.site_redirect_from ? [0] : []
     content {
