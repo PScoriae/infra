@@ -39,4 +39,5 @@ resource "cloudflare_record" "static_site" {
   value   = aws_s3_bucket_website_configuration.static_site.website_endpoint
   type    = "CNAME"
   proxied = true
+  comment = "Managed by Terraform"
 }

@@ -25,4 +25,5 @@ resource "cloudflare_record" "redirect" {
   value   = aws_s3_bucket_website_configuration.redirect[0].website_endpoint
   type    = "CNAME"
   proxied = true
+  comment = "Managed by Terraform"
 }
