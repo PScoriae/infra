@@ -130,3 +130,10 @@ module "pcc_banners" {
   name        = "pcc-banners"
   description = "A collection of images used to create thumbnails and banners for pierreccesario.com"
 }
+
+module "slotmachine" {
+  source      = "../modules/github_repo"
+  name        = "slotmachine"
+  description = "One of my first programs ever."
+  archived    = true
+}
