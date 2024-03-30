@@ -1,16 +1,5 @@
-locals {
-  bucket_arns = compact([
-    aws_s3_bucket.static_site.arn,
-    var.site_redirect_from != null ? aws_s3_bucket.redirect[0].arn : null,
-  ])
-  bucket_ids = compact([
-    aws_s3_bucket.static_site.id,
-    var.site_redirect_from != null ? aws_s3_bucket.redirect[0].id : null,
-  ])
-}
-
 data "aws_iam_policy_document" "s3_public_site" {
-  for_each = toset(local.bucket_arns)
+  for_each = toset(local.domains)
   statement {
     sid = "PublicReadGetObject"
     principals {
@@ -23,13 +12,13 @@ data "aws_iam_policy_document" "s3_public_site" {
     ]
 
     resources = [
-      "${each.value}/*",
+      "${aws_s3_bucket.static_site[each.value].arn}/*",
     ]
   }
 }
 
 data "aws_iam_policy_document" "manage_s3" {
-  for_each = toset(local.bucket_ids)
+  for_each = toset(local.domains)
   statement {
     sid    = "allowReadWriteS3"
     effect = "Allow"
@@ -39,11 +28,11 @@ data "aws_iam_policy_document" "manage_s3" {
       "s3:GetObject",
       "s3:DeleteObject",
     ]
-    resources = ["arn:aws:s3:::${each.value}/*"]
+    resources = ["${aws_s3_bucket.static_site[each.value].arn}/*"]
   }
 }
 
 resource "aws_iam_policy" "rw_s3" {
-  name   = "s3-${aws_s3_bucket.static_site.id}-rw"
-  policy = data.aws_iam_policy_document.manage_s3["${aws_s3_bucket.static_site.id}"].json
+  name   = "s3-${aws_s3_bucket.static_site[var.cname_record].id}-rw"
+  policy = data.aws_iam_policy_document.manage_s3["${aws_s3_bucket.static_site[var.cname_record].id}"].json
 }
