@@ -12,6 +12,7 @@ jobs:
       - name: Render terraform docs and push changes to main branch
         uses: terraform-docs/gh-actions@main
         with:
+          find-dir: modules
           recursive: true
           output-file: README.md
           output-method: inject
