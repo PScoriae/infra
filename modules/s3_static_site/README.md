@@ -38,7 +38,7 @@ No modules.
 | <a name="input_cname_record"></a> [cname\_record](#input\_cname\_record) | Full name of the CNAME record to be used | `string` | n/a | yes |
 | <a name="input_error"></a> [error](#input\_error) | path for error.html | `string` | `"error.html"` | no |
 | <a name="input_index"></a> [index](#input\_index) | path for index.html | `string` | `"index.html"` | no |
-| <a name="input_site_redirect_from"></a> [site\_redirect\_from](#input\_site\_redirect\_from) | If provided, create another CNAME record and S3 bucket for redirection to main bucket, typically for www subdomain. Expects a json policy. | `any` | `null` | no |
+| <a name="input_site_redirect_from"></a> [site\_redirect\_from](#input\_site\_redirect\_from) | If provided, create another CNAME record and S3 bucket for redirection to main bucket, typically for www subdomain. Expects a CNAME record. | `string` | `null` | no |
 
 ## Outputs
 
