@@ -108,3 +108,25 @@ module "mastermindpy" {
   topics      = ["python", "game", "mastermind"]
   archived    = true
 }
+
+module "doks_nginx_ingress" {
+  source      = "../modules/github_repo"
+  name        = "doks-nginx-ingress"
+  description = "Tutorial Nginx Ingress Controller for DigitalOcean Kubernetes (DOKS)"
+  topics      = ["digitalocean", "kubernetes", "nginx", "ingress"]
+  archived    = true
+}
+
+module "gqlgen_go" {
+  source      = "../modules/github_repo"
+  name        = "gqlgen-go"
+  description = "GraphQL gen for Go"
+  topics      = ["gql", "graphql", "go"]
+  archived    = true
+}
+
+module "pcc_banners" {
+  source      = "../modules/github_repo"
+  name        = "pcc-banners"
+  description = "A collection of images used to create thumbnails and banners for pierreccesario.com"
+}
