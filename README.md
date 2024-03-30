@@ -38,29 +38,3 @@ This section guides you on how to setup this Terraform monorepo in your local ma
 4. Run `aws configure` in your terminal to configure the AWS CLI to use said IAM User. This is how Terraform will gain access to your AWS account.
 5. In your desired project folder, clone the repo.
 6. Finally, run `terraform init` in any Terraform directory to set up the Terraform backend.
-
-<!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
-
-## Providers
-
-No providers.
-
-## Modules
-
-No modules.
-
-## Resources
-
-No resources.
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
-<!-- END_TF_DOCS -->
