@@ -1,13 +1,15 @@
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_github"></a> [github](#requirement\_github) | ~> 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | n/a |
+| <a name="provider_github"></a> [github](#provider\_github) | ~> 6.0 |
 
 ## Modules
 
@@ -17,7 +19,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [github_repository.this](https://registry.terraform.io/providers/hashicorp/github/latest/docs/resources/repository) | resource |
+| [github_repository.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
 
 ## Inputs
 
