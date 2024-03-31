@@ -1,9 +1,8 @@
-resource "aws_ssm_parameter" "this" {
-  name        = var.name
-  type        = var.type
-  value       = var.value
-  description = var.description
-  lifecycle {
-    ignore_changes = [value]
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
 }
