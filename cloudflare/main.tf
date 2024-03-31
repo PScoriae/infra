@@ -1,0 +1,16 @@
+terraform {
+  backend "s3" {
+    bucket         = "pscoriae-tf-state-s3"
+    key            = "cloudflare/terraform.tfstate"
+    region         = "ap-southeast-1"
+    dynamodb_table = "tf-state-lock"
+  }
+}
+
+provider "aws" {
+  region = "ap-southeast-1"
+}
+
+provider "cloudflare" {
+  api_token = data.aws_ssm_parameter.cf_api_token.value
+}
