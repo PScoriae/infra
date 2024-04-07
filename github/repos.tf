@@ -26,6 +26,12 @@ module "ansible_playbooks" {
   topics      = ["nginx", "ansible", "aws", "gcp", "devops", "cloudflare", "proxmox"]
 }
 
+module "remutopie" {
+  source = "../modules/github_repo"
+  name   = "ReMuToPie"
+  topics = ["discord", "bot"]
+}
+
 module "movie_recommender" {
   source      = "../modules/github_repo"
   name        = "movie-recommender"
