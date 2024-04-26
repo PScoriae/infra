@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "s3_public_site" {
 data "aws_iam_policy_document" "manage_s3" {
   for_each = toset(local.domains)
   statement {
-    sid    = "allowReadWriteS3"
+    sid    = "AllowReadWriteS3"
     effect = "Allow"
     actions = [
       "s3:ListBucket",
