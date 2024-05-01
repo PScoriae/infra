@@ -2,7 +2,7 @@ resource "aws_ssoadmin_permission_set" "admin" {
   name             = "AdministratorAccess"
   description      = "POWAAAAAAH!"
   instance_arn     = tolist(data.aws_ssoadmin_instances.this.arns)[0]
-  relay_state      = "https://s3.console.aws.amazon.com/s3/home?region=us-east-1#"
+  relay_state      = "https://s3.console.aws.amazon.com/s3/home?region=ap-southeast-1#"
   session_duration = "PT8H" # 8 hours
 }
 
