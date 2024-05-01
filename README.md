@@ -37,6 +37,10 @@ So, the instructions here just assume you already have that set up, and you're j
 
 1. First, ensure [Terraform](https://terraform.com) is installed on your dev computer.
 2. Ensure the [AWS CLI](https://aws.amazon.com/cli/) is also installed on your dev computer.
-3. Run `aws configure` in your terminal to configure the AWS CLI to use the Terraform IAM user. This is how Terraform will gain access to your AWS account.
+3. Configure the AWS CLI to authenticate with your account. Two options:
+
+   - Use SSO and set up an AWS Profile to access your user (recommended)
+   - Run `aws configure` in your terminal to use the Terraform IAM user. (not recommended)
+
 4. In your desired project folder, clone the repo.
 5. Finally, run `terraform init` in any Terraform directory to set up the Terraform backend.
