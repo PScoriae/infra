@@ -5,7 +5,7 @@
   </a>
 </p>
 <p>
-  <img src="./docs/terraform.svg" width=300>
+  <img src="https://s3.ap-southeast-1.amazonaws.com/pierreccesario.com-images/terraform.svg" width=300>
 </p>
 
 ## Terraform IaC
