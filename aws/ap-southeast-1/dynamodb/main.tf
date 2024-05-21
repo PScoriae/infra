@@ -1,5 +1,6 @@
 terraform {
   backend "s3" {
+    encrypt        = true
     bucket         = "pscoriae-tf-state-s3"
     key            = "aws/ap-southeast-1/dynamodb/terraform.tfstate"
     region         = "ap-southeast-1"
