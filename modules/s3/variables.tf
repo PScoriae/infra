@@ -8,3 +8,9 @@ variable "public_access_block" {
   type        = bool
   default     = true
 }
+
+variable "versioning_enabled" {
+  description = "Whether to enable versioning on the bucket."
+  type        = bool
+  default     = false
+}
