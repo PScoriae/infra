@@ -48,7 +48,7 @@ resource "cloudflare_record" "static_site" {
   for_each = toset(local.domains)
   zone_id  = var.cloudflare_zone_id
   name     = each.value
-  value    = aws_s3_bucket_website_configuration.static_site["${each.value}"].website_endpoint
+  content  = aws_s3_bucket_website_configuration.static_site["${each.value}"].website_endpoint
   type     = "CNAME"
   proxied  = true
   comment  = "Managed by Terraform"
