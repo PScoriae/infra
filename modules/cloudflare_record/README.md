@@ -29,12 +29,12 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_comment"></a> [comment](#input\_comment) | Comment for the Cloudflare record | `string` | `"Managed by Terraform"` | no |
+| <a name="input_content"></a> [content](#input\_content) | Content of the Cloudflare record | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the Cloudflare record | `string` | `"pierreccesario.com"` | no |
 | <a name="input_priority"></a> [priority](#input\_priority) | Priority of the Cloudflare record | `number` | `null` | no |
 | <a name="input_proxied"></a> [proxied](#input\_proxied) | Whether the record is proxied by Cloudflare | `bool` | `false` | no |
 | <a name="input_ttl"></a> [ttl](#input\_ttl) | TTL of the Cloudflare record. Defaults to 1 hour | `number` | `3600` | no |
 | <a name="input_type"></a> [type](#input\_type) | Type of the Cloudflare record | `string` | n/a | yes |
-| <a name="input_value"></a> [value](#input\_value) | Value of the Cloudflare record | `string` | n/a | yes |
 
 ## Outputs
 
