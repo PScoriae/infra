@@ -4,8 +4,8 @@ variable "name" {
   default     = "pierreccesario.com"
 }
 
-variable "value" {
-  description = "Value of the Cloudflare record"
+variable "content" {
+  description = "Content of the Cloudflare record"
   type        = string
 }
 
