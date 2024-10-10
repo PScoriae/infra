@@ -33,8 +33,6 @@ jobs:
     strategy:
       matrix:
         tf-dir: ${{ fromJSON(needs.get-tofu-directories.outputs.TFDIRS) }}
-    outputs:
-      tfplan-exitcode: ${{ steps.tf-plan.outputs.exitcode }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,11 +51,11 @@ jobs:
         run: |
           echo "Running plan in ${{ matrix.tf-dir }}"
           cd ${{ matrix.tf-dir }}
-          export exitcode=0
+          export EXITCODE=0
           tofu init
-          tofu plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+          tofu plan -detailed-exitcode -no-color -out tfplan || export EXITCODE=$?
 
-          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+          echo "EXITCODE=$exitcode" >> $GITHUB_ENV
 
           if [ $exitcode -eq 1 ]; then
             echo Tofu Plan Failed!
@@ -100,7 +98,7 @@ jobs:
 
       # If changes are detected, create a new issue
       - name: Publish Drift Report
-        if: steps.tf-plan.outputs.exitcode == 2
+        if: env.EXITCODE == 2
         uses: actions/github-script@v7
         env:
           SUMMARY: "${{ steps.tf-plan-string.outputs.summary }}"
@@ -148,7 +146,7 @@ jobs:
 
       # If changes aren't detected, close any open drift issues
       - name: Publish Drift Report
-        if: steps.tf-plan.outputs.exitcode == 0
+        if: env.EXITCODE == 0
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -178,5 +176,5 @@ jobs:
 
       # Mark the workflow as failed if drift detected
       - name: Error on Failure
-        if: steps.tf-plan.outputs.exitcode == 2
+        if: env.EXITCODE == 2
         run: exit 1
