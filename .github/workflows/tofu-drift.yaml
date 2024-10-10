@@ -19,17 +19,17 @@ jobs:
         run: |
           tfdirsraw=$(find . -type f -name "*.tf" ! -path "*/modules/*" -exec dirname {} \; | sort -u)
           echo "List of Tofu directories"
-          echo $tfdirsraw
+          echo "$tfdirsraw"
           # Convert into JSON array
-          tfdirs=$(echo $tfdirsraw | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          echo tfdirs=$tfdirs >> $GITHUB_OUTPUT
+          tfdirs=$(echo "$tfdirsraw" | jq -R -s -c 'split("\n") | map(select(length > 0))' | jq)
+          echo "tfdirs=$tfdirs" >> $GITHUB_OUTPUT
 
   check-drift:
     needs: get-tofu-directories
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tf-dirs: ${{fromJson(needs.get-tofu-directories.outputs.tf-dirs)}}
+        tf-dir: ${{ fromJson(needs.get-tofu-directories.outputs.tf-dirs) }}
     outputs:
       tfplan-exitcode: ${{ steps.tf-plan.outputs.exitcode }}
     steps:
@@ -48,8 +48,8 @@ jobs:
       - name: Check drift in Tofu directories
         id: tf-plan
         run: |
-          echo "Running plan in ${{ matrix.tf-dirs }}"
-          cd ${{ matrix.tf-dirs }}
+          echo "Running plan in ${{ matrix.tf-dir }}"
+          cd ${{ matrix.tf-dir }}
           export exitcode=0
           tofu plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
 
