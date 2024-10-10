@@ -1,0 +1,169 @@
+name: Tokyo Drift Detector
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  get-tofu-directories:
+    outputs:
+      tf-dirs: ${{ steps.get-tf-dirs.outputs.tf-dirs }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Get list of directories with Terraform
+        id: get-tf-dirs
+        run: |
+          tfdirs=$(find . -type f -name "*.tf" ! -path "*/modules/*" -exec dirname {} \; | sort -u) >> $GITHUB_OUTPUT
+
+  check-drift:
+    needs: get-tofu-directories
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tf-dirs: ${{fromJson(needs.get-tofu-directories.outputs.tf-dirs)}}
+    outputs:
+      tfplan-exitcode: ${{ steps.tf-plan.outputs.exitcode }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Check drift in Tofu directories
+        id: tf-plan
+        run: |
+          echo "Running plan in ${{ matrix.tf-dirs }}"
+          cd ${{ matrix.tf-dirs }}
+          export exitcode=0
+          tofu plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+
+          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+
+          if [ $exitcode -eq 1 ]; then
+            echo Tofu Plan Failed!
+            exit 1
+          else 
+            exit 0
+          fi
+
+      # Save plan to artifacts
+      - name: Publish Tofu Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: tfplan
+
+      # Create string output of Tofu Plan
+      - name: Create String Output
+        id: tf-plan-string
+        run: |
+          TOFU_PLAN=$(tofu show -no-color tfplan)
+
+          delimiter="$(openssl rand -hex 8)"
+          echo "summary<<${delimiter}" >> $GITHUB_OUTPUT
+          echo "## Tofu Plan Output" >> $GITHUB_OUTPUT
+          echo "<details><summary>Click to expand</summary>" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo '```tofu' >> $GITHUB_OUTPUT
+          echo "$TOFU_PLAN" >> $GITHUB_OUTPUT
+          echo '```' >> $GITHUB_OUTPUT
+          echo "</details>" >> $GITHUB_OUTPUT
+          echo "${delimiter}" >> $GITHUB_OUTPUT
+
+      # Publish Terraform Plan as task summary
+      - name: Publish Terraform Plan to Task Summary
+        env:
+          SUMMARY: ${{ steps.tf-plan-string.outputs.summary }}
+        run: |
+          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
+
+      # If changes are detected, create a new issue
+      - name: Publish Drift Report
+        if: steps.tf-plan.outputs.exitcode == 2
+        uses: actions/github-script@v7
+        env:
+          SUMMARY: "${{ steps.tf-plan-string.outputs.summary }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = `${process.env.SUMMARY}`;
+            const title = 'Terraform Configuration Drift Detected';
+            const creator = 'github-actions[bot]'
+
+            // Look to see if there is an existing drift issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              creator: creator,
+              title: title
+            })
+              
+            if( issues.data.length > 0 ) {
+              // We assume there shouldn't be more than 1 open issue, since we update any issue we find
+              const issue = issues.data[0]
+              
+              if ( issue.body == body ) {
+                console.log('Drift Detected: Found matching issue with duplicate content')
+              } else {
+                console.log('Drift Detected: Found matching issue, updating body')
+                github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: body
+                })
+              }
+            } else {
+              console.log('Drift Detected: Creating new issue')
+
+              github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body
+            })
+            }
+
+      # If changes aren't detected, close any open drift issues
+      - name: Publish Drift Report
+        if: steps.tf-plan.outputs.exitcode == 0
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = 'Terraform Configuration Drift Detected';
+            const creator = 'github-actions[bot]'
+
+            // Look to see if there is an existing drift issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              creator: creator,
+              title: title
+            })
+              
+            if( issues.data.length > 0 ) {
+              const issue = issues.data[0]
+              
+              github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed'
+              })
+            }
+
+      # Mark the workflow as failed if drift detected
+      - name: Error on Failure
+        if: steps.tf-plan.outputs.exitcode == 2
+        run: exit 1
