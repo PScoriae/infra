@@ -17,7 +17,7 @@ jobs:
       - name: Get list of directories with Tofu
         id: get-tf-dirs
         run: |
-          TFDIRS=$(find . -type f -name "*.tf" ! -path "*/modules/*" -exec dirname {} \; | sort -u)
+          TFDIRS=$(find . -type f -name "*.tf" ! -path "*/modules/*" ! -path "*/gcp/*" -exec dirname {} \; | sort -u)
           echo "List of Tofu directories"
           echo "$TFDIRS"
           # Convert into JSON array
