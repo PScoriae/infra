@@ -54,6 +54,7 @@ jobs:
           echo "Running plan in ${{ matrix.tf-dir }}"
           cd ${{ matrix.tf-dir }}
           export exitcode=0
+          tofu init
           tofu plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
 
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
