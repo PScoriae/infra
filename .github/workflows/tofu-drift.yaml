@@ -77,6 +77,7 @@ jobs:
       - name: Create String Output
         id: tf-plan-string
         run: |
+          cd ${{ matrix.tf-dir }}
           TOFU_PLAN=$(tofu show -no-color tfplan)
 
           delimiter="$(openssl rand -hex 8)"
@@ -107,7 +108,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const body = `${process.env.SUMMARY}`;
-            const title = 'Terraform Configuration Drift Detected';
+            const title = 'Tofu Drift Detected | ${{ matrix.tf-dir }}';
             const creator = 'github-actions[bot]'
 
             // Look to see if there is an existing drift issue
@@ -152,7 +153,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const title = 'Terraform Configuration Drift Detected';
+            const title = 'Tofu Drift Detected | ${{ matrix.tf-dir }}';
             const creator = 'github-actions[bot]'
 
             // Look to see if there is an existing drift issue
