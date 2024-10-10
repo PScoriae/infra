@@ -8,7 +8,7 @@ on:
 jobs:
   get-tofu-directories:
     outputs:
-      tf-dirs: ${{ steps.get-tf-dirs.outputs.tf-dirs }}
+      tf-dirs: ${{ steps.get-tf-dirs.outputs.tfdirs }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,7 +21,7 @@ jobs:
           echo "List of Tofu directories"
           echo "$tfdirsraw"
           # Convert into JSON array
-          tfdirs=$(echo "$tfdirsraw" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          tfdirs=$(echo "$tfdirsraw" | jq -R -s -c 'split("\n")[:-1]')
           echo "tfdirs=$tfdirs" >> $GITHUB_OUTPUT
 
   check-drift:
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tf-dir: ${{ fromJson(needs.get-tofu-directories.outputs.tf-dirs) }}
+        tf-dir: ${{ fromJSON(needs.get-tofu-directories.outputs.tf-dirs) }}
     outputs:
       tfplan-exitcode: ${{ steps.tf-plan.outputs.exitcode }}
     steps:
