@@ -27,6 +27,9 @@ jobs:
   check-drift:
     needs: get-tofu-directories
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     strategy:
       matrix:
         tf-dir: ${{ fromJSON(needs.get-tofu-directories.outputs.TFDIRS) }}
