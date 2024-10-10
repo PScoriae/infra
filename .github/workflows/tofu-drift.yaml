@@ -14,10 +14,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Get list of directories with Terraform
+      - name: Get list of directories with Tofu
         id: get-tf-dirs
         run: |
-          tfdirs=$(find . -type f -name "*.tf" ! -path "*/modules/*" -exec dirname {} \; | sort -u) >> $GITHUB_OUTPUT
+          tfdirsraw=$(find . -type f -name "*.tf" ! -path "*/modules/*" -exec dirname {} \; | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "List of Tofu directories"
+          echo $tfdirsraw
+          # Convert into JSON array
+          tfdirs=$(echo $tfdirsraw | jq -R -s -c 'split("\n") | map(select(length > 0))'
+          echo tfdirs=$tfdirs >> $GITHUB_OUTPUT
 
   check-drift:
     needs: get-tofu-directories
