@@ -21,7 +21,7 @@ jobs:
           echo "List of Tofu directories"
           echo "$tfdirsraw"
           # Convert into JSON array
-          tfdirs=$(echo "$tfdirsraw" | jq -R -s -c 'split("\n") | map(select(length > 0))' | jq)
+          tfdirs=$(echo "$tfdirsraw" | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "tfdirs=$tfdirs" >> $GITHUB_OUTPUT
 
   check-drift:
