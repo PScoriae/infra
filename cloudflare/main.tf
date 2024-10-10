@@ -10,8 +10,7 @@ terraform {
 
 provider "aws" {
   region  = "ap-southeast-1"
-  profile = "PScoriae"
-}
+  }
 
 provider "cloudflare" {
   api_token = data.aws_ssm_parameter.cf_api_token.value

@@ -10,8 +10,7 @@ terraform {
 
 provider "aws" {
   region  = "ap-southeast-1"
-  profile = "PScoriae"
-  default_tags {
+    default_tags {
     tags = {
       ManagedBy   = "Terraform"
       Environment = "Production"
