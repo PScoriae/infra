@@ -3,13 +3,13 @@ variable "cname_record" {
   type        = string
 }
 
-variable "index" {
+variable "index_path" {
   description = "path for index.html"
   type        = string
   default     = "index.html"
 }
 
-variable "error" {
+variable "error_path" {
   description = "path for error.html"
   type        = string
   default     = "error.html"

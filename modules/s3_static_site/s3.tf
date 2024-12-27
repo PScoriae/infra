@@ -25,14 +25,14 @@ resource "aws_s3_bucket_website_configuration" "static_site" {
   dynamic "index_document" {
     for_each = each.value == var.cname_record ? [0] : []
     content {
-      suffix = var.index
+      suffix = var.index_path
     }
   }
 
   dynamic "error_document" {
     for_each = each.value == var.cname_record ? [0] : []
     content {
-      key = var.error
+      key = var.error_path
     }
   }
 
