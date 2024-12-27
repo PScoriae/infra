@@ -4,4 +4,5 @@ module "pcc" {
   cloudflare_zone_id = data.aws_ssm_parameter.cf_zone_id_pcc.value
   cname_record       = "pierreccesario.com"
   site_redirect_from = "www.pierreccesario.com"
+  error_path         = "404.html"
 }
