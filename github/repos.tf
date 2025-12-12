@@ -143,3 +143,11 @@ module "slotmachine" {
   description = "One of my first programs ever."
   archived    = true
 }
+
+module "sam_project" {
+  source      = "../modules/github_repo"
+  name        = "sam-project"
+  description = "Playing around with SAM, CloudFormation and Serverless architectures."
+  topics      = ["aws", "sam", "serverless"]
+  visibility  = "private"
+}
