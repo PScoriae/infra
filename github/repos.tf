@@ -56,7 +56,7 @@ module "imyour_joy_py" {
 module "imyour_joy" {
   source      = "../modules/github_repo"
   name        = "imyour_joy"
-  description = "A self-hosted Kpop themed discord.js bot sandbox for my projects."
+  description = "A self-deployable Kpop themed discord.js bot sandbox for my projects."
   archived    = true
   topics      = ["bot", "docker", "jenkins", "spotify", "automation", "youtube", "discord", "discord-bot", "discord-js", "kpop", "webscraping"]
 }
