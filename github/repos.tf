@@ -151,3 +151,11 @@ module "sam_project" {
   topics      = ["aws", "sam", "serverless"]
   visibility  = "private"
 }
+
+module "tempah_booker" {
+  source      = "../modules/github_repo"
+  name        = "tempah-booker"
+  description = "Playwright-based automation script to book badminton courts at my local sports centre as soon as the booking window opens."
+  topics      = ["playwright", "badminton", "automation"]
+  visibility  = "private"
+}
