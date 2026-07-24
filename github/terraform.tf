@@ -6,6 +6,13 @@ terraform {
     region         = "ap-southeast-1"
     dynamodb_table = "tf-state-lock"
   }
+
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
+  }
 }
 
 provider "github" {
