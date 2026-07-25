@@ -5,6 +5,7 @@ terraform {
     key            = "github/terraform.tfstate"
     region         = "ap-southeast-1"
     dynamodb_table = "tf-state-lock"
+    profile        = "PScoriae"
   }
 
   required_providers {

@@ -5,6 +5,7 @@ terraform {
     key            = "aws/ap-southeast-1/network/terraform.tfstate"
     region         = "ap-southeast-1"
     dynamodb_table = "tf-state-lock"
+    profile        = "PScoriae"
   }
 
   required_providers {
@@ -16,7 +17,8 @@ terraform {
 }
 
 provider "aws" {
-  region = "ap-southeast-1"
+  profile = "PScoriae"
+  region  = "ap-southeast-1"
   default_tags {
     tags = {
       ManagedBy   = "Terraform"
