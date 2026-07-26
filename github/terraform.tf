@@ -1,11 +1,11 @@
 terraform {
   backend "s3" {
-    encrypt        = true
-    bucket         = "pscoriae-tf-state-s3"
-    key            = "github/terraform.tfstate"
-    region         = "ap-southeast-1"
-    dynamodb_table = "tf-state-lock"
-    profile        = "PScoriae"
+    bucket       = "pscoriae-tf-state-s3"
+    key          = "github/terraform.tfstate"
+    region       = "ap-southeast-1"
+    profile      = "PScoriae"
+    use_lockfile = true
+    encrypt      = true
   }
 
   required_providers {
