@@ -152,10 +152,10 @@ module "sam_project" {
   visibility  = "private"
 }
 
-module "tempah_booker" {
+module "whatsapp_bridge" {
   source      = "../modules/github_repo"
-  name        = "tempah-booker"
-  description = "Playwright-based automation script to book badminton courts at my local sports centre as soon as the booking window opens."
-  topics      = ["playwright", "badminton", "automation"]
+  name        = "whatsapp-bridge"
+  description = "Baileys WhatsApp bridge for Hermes"
+  topics      = ["whatsapp", "baileys", "hermes", "bridge"]
   visibility  = "private"
 }
