@@ -4,8 +4,10 @@ module "tfstate" {
   versioning_enabled = true
 }
 
-module "pcc_images" {
-  source              = "../../../modules/s3"
-  name                = "pierreccesario.com-images"
-  public_access_block = false
+# Moved to services/pierreccesario.com/aws/ap-southeast-1/s3; safe to delete after the first apply.
+removed {
+  from = module.pcc_images
+  lifecycle {
+    destroy = false
+  }
 }
