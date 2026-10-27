@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket       = "pscoriae-tf-state-s3"
-    key          = "cloudflare/terraform.tfstate"
+    key          = "platform/aws/ap-southeast-1/iam/terraform.tfstate"
     region       = "ap-southeast-1"
     profile      = "PScoriae"
     use_lockfile = true
@@ -13,8 +13,8 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 6.0"
     }
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
+    tls = {
+      source  = "hashicorp/tls"
       version = "~> 4.0"
     }
   }
@@ -23,8 +23,10 @@ terraform {
 provider "aws" {
   profile = "PScoriae"
   region  = "ap-southeast-1"
-}
-
-provider "cloudflare" {
-  api_token = data.aws_ssm_parameter.cf_api_token.value
+  default_tags {
+    tags = {
+      ManagedBy   = "Terraform"
+      Environment = "Production"
+    }
+  }
 }

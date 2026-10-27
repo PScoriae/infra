@@ -28,7 +28,7 @@ This repository is concerned with the provisioning of infrastructure for any of 
 
 Currently, the cloud services used to host my projects are AWS, GCP and Cloudflare.
 
-Resources belonging to a single project live under `services/<project>/`, mirroring the root layout (e.g. `services/pierreccesario.com/aws/ap-southeast-1/s3-site`). Shared resources stay at the root.
+Resources belonging to a single project live under `services/<project>/`, mirroring the root layout (e.g. `services/pierreccesario.com/aws/ap-southeast-1/s3-site`). Shared, account-level resources live under `platform/` with the same layout (e.g. `platform/aws/ap-southeast-1/sso`).
 
 # Usage
 
