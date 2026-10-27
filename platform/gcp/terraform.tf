@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket       = "pscoriae-tf-state-s3"
-    key          = "gcp/terraform.tfstate"
+    key          = "platform/gcp/terraform.tfstate"
     region       = "ap-southeast-1"
     profile      = "PScoriae"
     use_lockfile = true

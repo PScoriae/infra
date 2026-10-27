@@ -1,32 +1,32 @@
 module "infra" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "infra"
   description = "Terraform IaC for my projects on AWS, GCP, Cloudflare and GitHub"
   topics      = ["terraform", "aws", "gcp", "cloudflare", "github"]
 }
 
 module "dotfiles" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "dotfiles"
   description = "Backup of all my dotfiles."
   topics      = ["dotfiles", "macos", "shell", "zsh"]
 }
 
 module "ansible_playbooks" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "ansible-playbooks"
   description = "Playbooks to bootstrap and configure my VMs"
   topics      = ["nginx", "ansible", "aws", "gcp", "devops", "cloudflare", "proxmox"]
 }
 
 module "remutopie" {
-  source = "../modules/github_repo"
+  source = "../../modules/github_repo"
   name   = "ReMuToPie"
   topics = ["discord", "bot"]
 }
 
 module "movie_recommender" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "movie-recommender"
   description = "Functional Python program that takes in a list of favourite movies and returns recommended movies"
   topics      = ["python", "movies"]
@@ -34,20 +34,20 @@ module "movie_recommender" {
 }
 
 module "mongogin" {
-  source   = "../modules/github_repo"
+  source   = "../../modules/github_repo"
   name     = "mongogin"
   archived = true
 }
 
 module "imyour_joy_py" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "imyour_joy_py"
   description = "A simple Kpop discord.py bot."
   archived    = true
 }
 
 module "imyour_joy" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "imyour_joy"
   description = "A self-deployable Kpop themed discord.js bot sandbox for my projects."
   archived    = true
@@ -55,7 +55,7 @@ module "imyour_joy" {
 }
 
 module "pcpartstool" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "PCPartsTool"
   description = "SvelteKit MongoDB App, part of a series of repositories with the aim of learning DevOps best practices and tooling."
   archived    = true
@@ -63,7 +63,7 @@ module "pcpartstool" {
 }
 
 module "pcpartstool_scraper" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "PCPartsTool-Scraper"
   description = "Node.js PC part data and pricing scraper for the PCPartsTool project"
   archived    = true
@@ -71,21 +71,21 @@ module "pcpartstool_scraper" {
 }
 
 module "ucs_seating_algorithm" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "UCS-Seating-Algorithm"
   description = "Python-based modified UCS algorithm used to determine the best seating arrangements based on comfortability rating between people"
   archived    = true
 }
 
 module "basic_scala_sockets" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "BasicScalaSockets"
   description = "Rudimentary implementation of Client-Server Arch in Scala"
   archived    = true
 }
 
 module "pepeclicker" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "PepeClicker"
   description = "Pepe the Frog themed cookie clicker game built with Scala and ScalaFX."
   topics      = ["game", "scala", "scalafx", "cookie-clicker", "pepe-the-frog", "pepe"]
@@ -93,7 +93,7 @@ module "pepeclicker" {
 }
 
 module "bst_huffman" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "BST_Huffman"
   description = "Java implementation of Binary Search Tree and Huffman Encoding for Data Structures and Algorithms CSC2103 Assignment."
   topics      = ["java", "algorithms", "data-structures", "huffman-encoding", "binary-search-tree"]
@@ -101,7 +101,7 @@ module "bst_huffman" {
 }
 
 module "mastermindpy" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "MastermindPy"
   description = "The popular game implemented in Python3's console"
   topics      = ["python", "game", "mastermind"]
@@ -109,7 +109,7 @@ module "mastermindpy" {
 }
 
 module "doks_nginx_ingress" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "doks-nginx-ingress"
   description = "Tutorial Nginx Ingress Controller for DigitalOcean Kubernetes (DOKS)"
   topics      = ["digitalocean", "kubernetes", "nginx", "ingress"]
@@ -117,7 +117,7 @@ module "doks_nginx_ingress" {
 }
 
 module "gqlgen_go" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "gqlgen-go"
   description = "GraphQL gen for Go"
   topics      = ["gql", "graphql", "go"]
@@ -125,20 +125,20 @@ module "gqlgen_go" {
 }
 
 module "pcc_banners" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "pcc-banners"
   description = "A collection of images used to create thumbnails and banners for pierreccesario.com"
 }
 
 module "slotmachine" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "slotmachine"
   description = "One of my first programs ever."
   archived    = true
 }
 
 module "sam_project" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "sam-project"
   description = "Playing around with SAM, CloudFormation and Serverless architectures."
   topics      = ["aws", "sam", "serverless"]
@@ -146,7 +146,7 @@ module "sam_project" {
 }
 
 module "whatsapp_bridge" {
-  source      = "../modules/github_repo"
+  source      = "../../modules/github_repo"
   name        = "whatsapp-bridge"
   description = "Baileys WhatsApp bridge for Hermes"
   topics      = ["whatsapp", "baileys", "hermes", "bridge"]
