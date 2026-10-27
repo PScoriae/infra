@@ -12,13 +12,6 @@ module "dotfiles" {
   topics      = ["dotfiles", "macos", "shell", "zsh"]
 }
 
-module "pierreccesario" {
-  source      = "../modules/github_repo"
-  name        = "pierreccesario"
-  description = "My personal portfolio website built with Hugo, built with GitHub Actions and deployed on AWS."
-  topics      = ["aws", "portfolio", "hugo", "cloudflare", "github", "github-actions"]
-}
-
 module "ansible_playbooks" {
   source      = "../modules/github_repo"
   name        = "ansible-playbooks"
@@ -160,10 +153,31 @@ module "whatsapp_bridge" {
   visibility  = "private"
 }
 
-module "cipherline" {
-  source      = "../modules/github_repo"
-  name        = "cipherline"
-  description = "Real-time multiplayer team word-deduction game on Cloudflare Workers and Durable Objects"
-  topics      = ["game", "cloudflare-workers", "durable-objects", "websockets", "typescript", "react"]
-  visibility  = "private"
+# Moved to services/*/github; safe to delete after the first apply.
+removed {
+  from = module.pierreccesario
+  lifecycle {
+    destroy = false
+  }
+}
+
+removed {
+  from = module.cipherline
+  lifecycle {
+    destroy = false
+  }
+}
+
+removed {
+  from = github_actions_secret.cipherline_cf_account_id
+  lifecycle {
+    destroy = false
+  }
+}
+
+removed {
+  from = github_actions_secret.cipherline_cf_api_token
+  lifecycle {
+    destroy = false
+  }
 }

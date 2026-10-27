@@ -28,6 +28,8 @@ This repository is concerned with the provisioning of infrastructure for any of 
 
 Currently, the cloud services used to host my projects are AWS, GCP and Cloudflare.
 
+Resources belonging to a single project live under `services/<project>/`, mirroring the root layout (e.g. `services/pierreccesario.com/aws/ap-southeast-1/s3-site`). Shared resources stay at the root.
+
 # Usage
 
 This section guides you on how to setup and use this Terraform monorepo in your local machine.
