@@ -4,9 +4,3 @@ module "pierreccesario" {
   description = "My personal portfolio website built with Hugo, built with GitHub Actions and deployed on AWS."
   topics      = ["aws", "portfolio", "hugo", "cloudflare", "github", "github-actions"]
 }
-
-# Adopt from the old github/ state; safe to delete after the first apply.
-import {
-  to = module.pierreccesario.github_repository.this
-  id = "pierreccesario"
-}
