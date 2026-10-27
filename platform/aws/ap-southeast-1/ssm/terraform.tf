@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket       = "pscoriae-tf-state-s3"
-    key          = "aws/ap-southeast-1/iam/terraform.tfstate"
+    key          = "platform/aws/ap-southeast-1/ssm/terraform.tfstate"
     region       = "ap-southeast-1"
     profile      = "PScoriae"
     use_lockfile = true
@@ -12,10 +12,6 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 6.0"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "~> 4.0"
     }
   }
 }
