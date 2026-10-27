@@ -152,32 +152,3 @@ module "whatsapp_bridge" {
   topics      = ["whatsapp", "baileys", "hermes", "bridge"]
   visibility  = "private"
 }
-
-# Moved to services/*/github; safe to delete after the first apply.
-removed {
-  from = module.pierreccesario
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.cipherline
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = github_actions_secret.cipherline_cf_account_id
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = github_actions_secret.cipherline_cf_api_token
-  lifecycle {
-    destroy = false
-  }
-}
