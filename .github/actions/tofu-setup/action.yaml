@@ -1,0 +1,37 @@
+name: Tofu setup
+description: Install OpenTofu and expose CI credentials the way the repo's providers expect
+
+inputs:
+  aws-role:
+    description: IAM role ARN to assume via OIDC
+    required: true
+  github-token:
+    description: Token for the integrations/github provider
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup OpenTofu
+      uses: opentofu/setup-opentofu@v1
+
+    - name: Set up AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ inputs.aws-role }}
+        aws-region: ap-southeast-1
+
+    # Backends and providers hardcode profile = "PScoriae", so mirror the OIDC session into that profile
+    - name: Expose credentials as the PScoriae profile
+      shell: bash
+      run: |
+        aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" --profile PScoriae
+        aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY" --profile PScoriae
+        aws configure set aws_session_token "$AWS_SESSION_TOKEN" --profile PScoriae
+        aws configure set region ap-southeast-1 --profile PScoriae
+
+    - name: Export GitHub provider token
+      shell: bash
+      env:
+        TOKEN: ${{ inputs.github-token }}
+      run: echo "GITHUB_TOKEN=$TOKEN" >> "$GITHUB_ENV"
