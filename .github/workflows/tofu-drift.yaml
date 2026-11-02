@@ -2,8 +2,10 @@ name: Tokyo Drift Detector
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 0 * * *"
+  schedule:
+    - cron: "0 0 * * *"
+
+concurrency: tofu-drift
 
 jobs:
   get-tofu-directories:
@@ -30,53 +32,38 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      issues: write
     strategy:
+      fail-fast: false
       matrix:
         tf-dir: ${{ fromJSON(needs.get-tofu-directories.outputs.TFDIRS) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1
-
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Setup Tofu
+        uses: ./.github/actions/tofu-setup
         with:
-          role-to-assume: ${{ secrets.AWS_GHA_ROLE }}
-          aws-region: ap-southeast-1
+          aws-role: ${{ secrets.AWS_GHA_ROLE }}
+          github-token: ${{ secrets.TOFU_GITHUB_TOKEN }}
 
       - name: Check drift in Tofu directories
         id: tf-plan
+        working-directory: ${{ matrix.tf-dir }}
         run: |
-          echo "Running plan in ${{ matrix.tf-dir }}"
-          cd ${{ matrix.tf-dir }}
-          export EXITCODE=0
-          tofu init
-          tofu plan -detailed-exitcode -no-color -out tfplan || export EXITCODE=$?
-
-          echo "EXITCODE=$exitcode" >> $GITHUB_ENV
-
-          if [ $exitcode -eq 1 ]; then
-            echo Tofu Plan Failed!
-            exit 1
-          else 
-            exit 0
-          fi
-
-      # Save plan to artifacts
-      - name: Publish Tofu Plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan
-          path: tfplan
+          tofu init -input=false
+          EXITCODE=0
+          tofu plan -detailed-exitcode -no-color -input=false -out "$RUNNER_TEMP/tfplan" || EXITCODE=$?
+          echo "EXITCODE=$EXITCODE" >> $GITHUB_ENV
+          [ $EXITCODE -ne 1 ] || { echo "Tofu Plan Failed!"; exit 1; }
 
       # Create string output of Tofu Plan
       - name: Create String Output
         id: tf-plan-string
+        working-directory: ${{ matrix.tf-dir }}
         run: |
-          cd ${{ matrix.tf-dir }}
-          TOFU_PLAN=$(tofu show -no-color tfplan)
+          # shortcut: truncates to stay under GitHub's 65536-char issue body limit; full plan is in the run log
+          TOFU_PLAN=$(tofu show -no-color "$RUNNER_TEMP/tfplan" | head -c 60000)
 
           delimiter="$(openssl rand -hex 8)"
           echo "summary<<${delimiter}" >> $GITHUB_OUTPUT
@@ -87,6 +74,8 @@ jobs:
           echo "$TOFU_PLAN" >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "</details>" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**Reconcile:** add \`drift:revert\` to apply the code over reality (needs approval on the \`prod\` environment), or \`drift:accept\` to have Claude open a PR that updates the code to match reality." >> $GITHUB_OUTPUT
           echo "${delimiter}" >> $GITHUB_OUTPUT
 
       # Publish Terraform Plan as task summary
@@ -114,19 +103,16 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              creator: creator,
-              title: title
+              creator: creator
             })
-              
-            if( issues.data.length > 0 ) {
-              // We assume there shouldn't be more than 1 open issue, since we update any issue we find
-              const issue = issues.data[0]
-              
+            const issue = issues.data.find(i => i.title === title)
+
+            if( issue ) {
               if ( issue.body == body ) {
                 console.log('Drift Detected: Found matching issue with duplicate content')
               } else {
                 console.log('Drift Detected: Found matching issue, updating body')
-                github.rest.issues.update({
+                await github.rest.issues.update({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
@@ -136,16 +122,16 @@ jobs:
             } else {
               console.log('Drift Detected: Creating new issue')
 
-              github.rest.issues.create({
+              await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: title,
                 body: body
-            })
+              })
             }
 
       # If changes aren't detected, close any open drift issues
-      - name: Publish Drift Report
+      - name: Close Drift Report
         if: env.EXITCODE == 0
         uses: actions/github-script@v7
         with:
@@ -159,14 +145,12 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              creator: creator,
-              title: title
+              creator: creator
             })
-              
-            if( issues.data.length > 0 ) {
-              const issue = issues.data[0]
-              
-              github.rest.issues.update({
+            const issue = issues.data.find(i => i.title === title)
+
+            if( issue ) {
+              await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
